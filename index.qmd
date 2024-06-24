@@ -1,7 +1,43 @@
 ---
 title: "Bitcoin Prices"
+execute: 
+  echo: false
+  warning: false
+  message: false
 ---
 
-This is a Quarto website.
+```{r}
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+#| message: false
+#| echo: false
+
+library(tidyverse)
+library(tidycensus)
+library(plotly)
+
+x <- read_csv("archive.zip")
+
+plot_open <- plot_ly(x, x = ~Date) %>%
+  add_lines(y = ~Volume, name = 'Open', line = list(color = 'blue')) %>%
+  layout(
+    title = "Volume Stock Prices Over Time",
+    xaxis = list(title = "Date"),
+    yaxis = list(title = "Price")
+  )
+
+# Plot for High and Low data
+plot_high_low <- plot_ly(x, x = ~Date) %>%
+  add_lines(y = ~High, name = 'High', line = list(color = 'green')) %>%
+  add_lines(y = ~Low, name = 'Low', line = list(color = 'red')) %>%
+  layout(
+    title = "High and Low Stock Prices Over Time",
+    xaxis = list(title = "Date"),
+    yaxis = list(title = "Price")
+  )
+
+plot_open
+plot_high_low
+
+```
+
